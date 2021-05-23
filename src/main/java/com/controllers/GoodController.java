@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-//@RequestMapping("/items-list")
+@RequestMapping("/items-list")
 public class GoodController {
     private GoodServiceImp goodServiceImp;
 
@@ -18,7 +18,7 @@ public class GoodController {
         this.goodServiceImp = goodServiceImp;
     }
 
-    @GetMapping("/items-list")
+    @GetMapping
     public String showGoodWithFilter(Model model, @RequestParam(value = "id", required = false) Long id) {
         if (id == null) {
             model.addAttribute("items", goodServiceImp.findAll());
@@ -32,21 +32,26 @@ public class GoodController {
 
     @GetMapping("/add")
     public String createGood(Model model) {
-        if (!model.containsAttribute("item")) {
-            model.addAttribute("item", new Good());
-        }
-        return "add-good";
+        Good goods = new Good();
+        model.addAttribute("item", goods);
+        return "item-edit";
     }
 
-    @PostMapping("/addPost")
-    public String newGood(Model model, Good item) {
-        Good good = goodServiceImp.save(item);
+    @GetMapping("/edit/{id}")
+    public String showEditGoodsForm(Model model, @PathVariable("id") Long id) {
+        Good good = goodServiceImp.findById(id);
         model.addAttribute("item", good);
-        return "redirect:/add";
+        return "item-edit";
+    }
+
+    @PostMapping("/edit")
+    public String modifyGoods(@ModelAttribute(value = "item")Good item) {
+        goodServiceImp.save(item);
+        return "redirect:/items-list";
     }
 
     @DeleteMapping("/{id}")
-    public String removeGood(@PathVariable("id") Long id) {
+    public String removeGoods(@PathVariable("id") Long id) {
         goodServiceImp.delete(id);
         return "redirect:/items-list";
     }

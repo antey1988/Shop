@@ -9,23 +9,23 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Список товаров</title>
+    <title>Каталог товаров</title>
 </head>
 <body>
 
 <div class="container">
-    <form method="post" th:action="@{/items-list/add}" th:object="${item}">
-        <div class="input-group mb-3 mt-3">
-            <input type="text" th:field="*{name}" class="form-control" placeholder="Название нового товара"
-                   aria-label="Название нового товара" aria-describedby="basic-addon2">
-            <input type="text" th:field="*{price}" class="form-control" placeholder="Цена нового товара"
-                   aria-label="Цена нового товара" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Добавить</button>
-            </div>
-        </div>
-    </form>
-
+    <h1>Каталог товаров</h1>
+    <!--    <form method="post" th:action="@{/items-list/add}" th:object="${item}">-->
+    <!--        <div class="input-group mb-3 mt-3">-->
+    <!--            <input type="text" th:field="*{name}" class="form-control" placeholder="Название нового товара"-->
+    <!--                   aria-label="Название нового товара" aria-describedby="basic-addon2">-->
+    <!--            <input type="text" th:field="*{price}" class="form-control" placeholder="Цена нового товара"-->
+    <!--                   aria-label="Цена нового товара" aria-describedby="basic-addon2">-->
+    <!--            <div class="input-group-append">-->
+    <!--                <button class="btn btn-primary" type="submit">Добавить</button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </form>-->
     <form method="get" th:action="@{/items-list}">
         <div class="input-group mb-3 mt-3">
             <input type="text" th:value="${id != null} ? ${id}" name="id" class="form-control" placeholder="Укажите id товара"
@@ -51,13 +51,23 @@
             <td th:text="${item.name}"></td>
             <td th:text="${item.price}"></td>
             <td>
-                <form th:action="@{/items-list/{id}(id = ${item.id})}" th:method="delete">
-                    <button type="submit" class="btn btn-outline-danger">Удалить</button>
-                </form>
+                <div class="form-row">
+                    <form th:action="@{/items-list/edit/{id}(id = ${item.id})}" th:method="get">
+                        <button type="submit" class="btn btn-outline-warning">Изменить</button>
+                    </form>
+                    <div class="col form-group">
+                        <form th:action="@{/items-list/{id}(id = ${item.id})}" th:method="delete">
+                            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                        </form>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
+    <form th:action="@{/items-list/add}" th:method="get">
+        <button type="submit" class="btn btn-primary">Добавить товар</button>
+    </form>
 </div>
 
 
