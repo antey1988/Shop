@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class GoodServiceImp implements GoodService {
@@ -33,6 +34,10 @@ public class GoodServiceImp implements GoodService {
 
     @Override
     public Good findById(Long id) {
-        return goodRepository.findById(id).get();
+        try {
+            return goodRepository.findById(id).get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 }

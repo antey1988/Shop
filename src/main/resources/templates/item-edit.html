@@ -11,8 +11,8 @@
 <body>
 <h3 th:text="${item.id == null ? 'Добавление товара' : 'Изменение товара'}"></h3>
 <div class="container">
-    <form th:action="@{/items-list/edit}"
-          th:object="${item}" method="post" class="form-horizontal">
+    <form method="post" th:action="@{/items/save}"
+          th:object="${item}" class="form-horizontal">
 
         <div style="margin-bottom: 25px" class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -33,6 +34,10 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public Order findById(Long id) {
-        return orderRepository.findById(id).get();
+        try {
+            return orderRepository.findById(id).get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 }

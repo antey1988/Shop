@@ -1,58 +1,58 @@
 package com.controllers;
 
 import com.entities.Good;
-import com.services.GoodServiceImp;
-import org.h2.engine.Mode;
+import com.services.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/items-list")
+//@RequestMapping("/items-list")
 public class GoodController {
-    private GoodServiceImp goodServiceImp;
+    private GoodService goodService;
 
     @Autowired
-    public void setGoodServiceImp(GoodServiceImp goodServiceImp) {
-        this.goodServiceImp = goodServiceImp;
+    public void setGoodServiceImp(GoodService goodService) {
+        this.goodService = goodService;
     }
 
-    @GetMapping
+    @GetMapping("/items")
     public String showGoodWithFilter(Model model, @RequestParam(value = "id", required = false) Long id) {
         if (id == null) {
-            model.addAttribute("items", goodServiceImp.findAll());
+            model.addAttribute("items", goodService.findAll());
         } else {
-            model.addAttribute("items", goodServiceImp.findById(id));
+            model.addAttribute("items", goodService.findById(id));
         }
-        model.addAttribute("item", new Good());
+//        model.addAttribute("item", new Good());
         model.addAttribute("id", id);
         return "items-list";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/items/add")
     public String createGood(Model model) {
         Good goods = new Good();
         model.addAttribute("item", goods);
         return "item-edit";
     }
 
-    @GetMapping("/edit/{id}")
-    public String showEditGoodsForm(Model model, @PathVariable("id") Long id) {
-        Good good = goodServiceImp.findById(id);
+//    @GetMapping("/items/edit/{id}")
+    @GetMapping("/items/edit")
+    public String showEditGoodsForm(Model model, @RequestParam("id") Long id) {
+        Good good = goodService.findById(id);
         model.addAttribute("item", good);
         return "item-edit";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/items/save")
     public String modifyGoods(@ModelAttribute(value = "item")Good item) {
-        goodServiceImp.save(item);
-        return "redirect:/items-list";
+        goodService.save(item);
+        return "redirect:/items";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/items/delete/{id}")
     public String removeGoods(@PathVariable("id") Long id) {
-        goodServiceImp.delete(id);
-        return "redirect:/items-list";
+        goodService.delete(id);
+        return "redirect:/items";
     }
 }

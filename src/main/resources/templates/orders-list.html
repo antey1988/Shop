@@ -9,16 +9,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Каталог товаров</title>
+    <title>Журнал заказов</title>
 </head>
 <body>
 
 <div class="container">
-    <h1>Каталог товаров</h1>
-    <form method="get" th:action="@{/items}">
+    <h1>Журнал заказов</h1>
+    <form method="get" th:action="@{/orders}">
         <div class="input-group mb-3 mt-3">
-            <input type="text" th:value="${id != null} ? ${id}" name="id" class="form-control" placeholder="Укажите id товара"
-                   aria-label="Укажите id товара" aria-describedby="basic-addon2">
+            <input type="text" name="id" th:value="${id != null} ? ${id}" class="form-control" placeholder="Укажите id заказа"
+                   aria-label="Укажите id заказа" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">Отфильтровать</button>
             </div>
@@ -29,35 +29,36 @@
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Название товара</th>
-            <th scope="col">Цена</th>
-            <th scope="col">Действия</th>
+            <th scope="col">Клиент</th>
+            <th scope="col">Дата</th>
+            <th scope="col">Адрес</th>
+            <th scope="col">Действие</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${items}">
-            <th scope="row" th:text="${item.id}"></th>
-            <td th:text="${item.name}"></td>
-            <td th:text="${item.price}"></td>
+        <tr th:each="order : ${orders}">
+            <th scope="row" th:text="${order.id}"></th>
+            <td th:text="${order.client}"></td>
+            <td th:text="${#dates.format(order.date, 'dd-MM-yyyy')}" ></td>
+            <td th:text="${order.address}"></td>
             <td>
                 <div class="form-row">
-<!--                    <form th:method="get" th:action="@{/items/edit/{id}(id = ${item.id})}">-->
-                    <form th:method="get" th:action="@{/items/edit}">
-                        <input type="hidden" name="id" th:value="${item.id}">
-                        <button type="submit" class="btn btn-outline-warning">Изменить</button>
-                    </form>
-                    <div class="col form-group">
-                        <form th:method="delete" th:action="@{/items/delete/{id}(id = ${item.id})}">
+                        <form th:method="get" th:action="@{/orders/edit}">
+                            <input type="hidden" name="id" th:value="${order.id}">
+                            <button type="submit" class="btn btn-outline-warning">Изменить</button>
+                        </form>
+<!--                    <div class="col form-group">-->
+                        <form th:method="delete" th:action="@{/orders/delete/{id}(id = ${order.id})}">
                             <button type="submit" class="btn btn-outline-danger">Удалить</button>
                         </form>
-                    </div>
+<!--                    </div>-->
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
-    <form  th:method="get"th:action="@{/items/add}">
-        <button type="submit" class="btn btn-primary">Добавить товар</button>
+    <form  th:method="get"th:action="@{/orders/add}">
+        <button type="submit" class="btn btn-primary">Создать заказ</button>
     </form>
 </div>
 
