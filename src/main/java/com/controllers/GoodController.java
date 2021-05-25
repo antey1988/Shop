@@ -1,11 +1,15 @@
 package com.controllers;
 
 import com.entities.Good;
+import com.entities.Order;
 import com.services.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 //@RequestMapping("/items-list")
@@ -18,7 +22,7 @@ public class GoodController {
     }
 
     @GetMapping("/items")
-    public String showGoodWithFilter(Model model, @RequestParam(value = "id", required = false) Long id) {
+    public String showGoodsWithFilter(Model model, @RequestParam(value = "id", required = false) Long id) {
         if (id == null) {
             model.addAttribute("items", goodService.findAll());
         } else {
@@ -30,7 +34,7 @@ public class GoodController {
     }
 
     @GetMapping("/items/add")
-    public String createGood(Model model) {
+    public String showCreateGood(Model model) {
         Good goods = new Good();
         model.addAttribute("item", goods);
         return "item-edit";
@@ -38,10 +42,20 @@ public class GoodController {
 
 //    @GetMapping("/items/edit/{id}")
     @GetMapping("/items/edit")
-    public String showEditGoodsForm(Model model, @RequestParam("id") Long id) {
+    public String showEditGood(Model model, @RequestParam("id") Long id) {
         Good good = goodService.findById(id);
         model.addAttribute("item", good);
         return "item-edit";
+    }
+
+    @GetMapping("/items/select")
+    public String showSelectGood(Model model, @RequestParam(value = "orderid", required = false) Long id,
+                                 @ModelAttribute(value = "order")Order order) {
+        Map<Good, Boolean> items = new HashMap<>();
+        goodService.findAll().forEach(g->items.put(g, Boolean.FALSE));
+        model.addAttribute("items", items);
+        model.addAttribute("order", order);
+        return "items-select";
     }
 
     @PostMapping("/items/save")
