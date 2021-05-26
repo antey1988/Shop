@@ -43,6 +43,7 @@
                 <div class="form-row">
 <!--                    <form th:method="get" th:action="@{/items/edit/{id}(id = ${item.id})}">-->
                     <form th:method="get" th:action="@{/items/edit}">
+<!--                    <form th:method="get" th:action="@{/items/edit(id=${item.id})}">-->
                         <input type="hidden" name="id" th:value="${item.id}">
                         <button type="submit" class="btn btn-outline-warning">Изменить</button>
                     </form>

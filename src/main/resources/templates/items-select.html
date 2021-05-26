@@ -25,7 +25,8 @@
         </div>
     </form>-->
     <form  th:method="post"th:action="@{/orders/orderlines}"
-        th:object="${items}">
+        th:object="${goodId}">
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -37,18 +38,15 @@
             </thead>
             <tbody>
             <tr th:each="item : ${items}">
-                <th scope="row" th:text="${item.key.id}"></th>
-                <td th:text="${item.key.name}"></td>
-                <td th:text="${item.key.price}"></td>
-                <td>
-                    <div class="form-row">
-                        <input type="checkbox" th:odject="${item.value}">
-                    </div>
-                </td>
+                <th scope="row" th:text="${item.id}"></th>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.price}"></td>
+                <td> <input type="checkbox" th:field="*{checkedItems}" th:value="${item.id}"> </td>
             </tr>
             </tbody>
         </table>
-        <input type="hidden" name="id" th:value="${order.id}">
+<!--        <input type="hidden" name="id" th:value="${order.id}">-->
+        <input type="hidden" name="id" th:value="${orderid}">
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </div>

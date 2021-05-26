@@ -1,6 +1,7 @@
 package com.controllers;
 
 import com.entities.Good;
+import com.entities.GoodId;
 import com.entities.Order;
 import com.services.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-//@RequestMapping("/items-list")
+@Transactional
 public class GoodController {
     private GoodService goodService;
 
@@ -28,7 +30,6 @@ public class GoodController {
         } else {
             model.addAttribute("items", goodService.findById(id));
         }
-//        model.addAttribute("item", new Good());
         model.addAttribute("id", id);
         return "items-list";
     }
@@ -40,7 +41,6 @@ public class GoodController {
         return "item-edit";
     }
 
-//    @GetMapping("/items/edit/{id}")
     @GetMapping("/items/edit")
     public String showEditGood(Model model, @RequestParam("id") Long id) {
         Good good = goodService.findById(id);
@@ -49,12 +49,12 @@ public class GoodController {
     }
 
     @GetMapping("/items/select")
-    public String showSelectGood(Model model, @RequestParam(value = "orderid", required = false) Long id,
-                                 @ModelAttribute(value = "order")Order order) {
-        Map<Good, Boolean> items = new HashMap<>();
-        goodService.findAll().forEach(g->items.put(g, Boolean.FALSE));
-        model.addAttribute("items", items);
-        model.addAttribute("order", order);
+    public String showSelectGood(Model model, @RequestParam(value = "orderid", required = false) Long id ){
+//                                 ,@ModelAttribute(value = "order")Order order) {
+        model.addAttribute("items", goodService.findAll());
+//        model.addAttribute("order", order);
+        model.addAttribute("orderid", id);
+        model.addAttribute("goodId", new GoodId());
         return "items-select";
     }
 
