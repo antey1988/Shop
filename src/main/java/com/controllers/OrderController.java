@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 public class OrderController {
-    private List<OrderLine> orderLines = new ArrayList<>();
+    private List<OrderLine> orderLines;
     private Order currentOrder;
     private OrderService orderService;
     private GoodService goodService;
@@ -49,19 +49,29 @@ public class OrderController {
 
     @GetMapping("/orders/add")
     public String createGood(Model model) {
-        currentOrder = new Order();
-        orderLines.forEach(orderLine -> orderLine.setOrder(currentOrder));
-        currentOrder.setOrderLines(new ArrayList<>(orderLines));
-        model.addAttribute("order", currentOrder);
+        if (currentOrder == null) {
+            currentOrder = new Order();
+        }
+        Order order = currentOrder;
+        if (orderLines != null) {
+            orderLines.forEach(orderLine -> orderLine.setOrder(order));
+            currentOrder.setOrderLines(new ArrayList<>(orderLines));
+        }
+        model.addAttribute("order", order);
         return "order-edit";
     }
 
     @GetMapping("/orders/edit")
     public String showEditGoodsForm(Model model, @RequestParam(value = "id") Long id) {
-        currentOrder = orderService.findById(id);
-        orderLines.forEach(orderLine -> orderLine.setOrder(currentOrder));
-        currentOrder.setOrderLines(new ArrayList<>(orderLines));
-        model.addAttribute("order", currentOrder);
+        if (currentOrder == null) {
+            currentOrder = orderService.findById(id);
+        }
+        Order order = currentOrder;
+        if (orderLines != null) {
+            orderLines.forEach(orderLine -> orderLine.setOrder(order));
+            currentOrder.setOrderLines(new ArrayList<>(orderLines));
+        }
+        model.addAttribute("order", order);
         return "order-edit";
     }
 
@@ -69,7 +79,7 @@ public class OrderController {
     public String getOrderLines(RedirectAttributes attributes,
                                 @RequestParam(value = "id",required = false) Long orderId,
                                 @ModelAttribute(value = "goodId") GoodId goodId) {
-        orderLines.clear();
+        orderLines = new ArrayList<>();
         goodId.getCheckedItems().forEach(id->{
                     OrderLine orderLine = new OrderLine();
                     orderLine.setGood(goodService.findById(id));
@@ -86,6 +96,8 @@ public class OrderController {
     @PostMapping("/orders/save")
     public String modifyGoods(@ModelAttribute(value = "order")Order order) {
         orderService.save(order);
+        currentOrder = null;
+        orderLines = null;
         return "redirect:/orders";
     }
 
