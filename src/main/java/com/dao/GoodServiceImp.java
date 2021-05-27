@@ -1,4 +1,4 @@
-package com.services;
+package com.dao;
 
 import com.entities.Good;
 import com.repositories.GoodRepository;
@@ -30,6 +30,11 @@ public class GoodServiceImp implements GoodService {
     @Override
     public List<Good> findAll() {
         return goodRepository.findAll();
+    }
+
+    @Override
+    public List<Good> findAllById(Iterable<Long> IDs) {
+        return goodRepository.findAllById(IDs);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.entities;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Order {
     @Column(name = "ADDRESS", nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderLine> orderLines;
 
     public Order() {

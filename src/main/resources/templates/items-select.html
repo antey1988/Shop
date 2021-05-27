@@ -25,7 +25,8 @@
         </div>
     </form>-->
     <form  th:method="post"th:action="@{/orders/orderlines}"
-        th:object="${goodId}">
+                th:object="${goodId}">
+<!--    th:object="${goodForOrder}">-->
 
         <table class="table table-striped">
             <thead>
@@ -42,6 +43,7 @@
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.price}"></td>
                 <td> <input type="checkbox" th:field="*{checkedItems}" th:value="${item.id}"> </td>
+<!--                <td> <input type="checkbox" th:field="*{checkedItems}" th:value="${item}"> </td>-->
             </tr>
             </tbody>
         </table>

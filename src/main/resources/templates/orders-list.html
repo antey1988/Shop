@@ -43,7 +43,7 @@
             <td th:text="${order.address}"></td>
             <td>
                 <div class="form-row">
-                        <form th:method="get" th:action="@{/orders/edit}"> <!--(id=${order.id})-->
+                        <form th:method="get" th:action="@{/orders/edit}"> <!--(id=${orderService.id})-->
                             <input type="hidden" name="id" th:value="${order.id}">
                             <button type="submit" class="btn btn-outline-warning">Изменить</button>
                         </form>

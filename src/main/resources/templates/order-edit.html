@@ -10,10 +10,9 @@
 
 <body>
 <h3 th:text="${order.id == null ? 'Создание заказа' : 'Изменение Заказа'}"></h3>
-<div class="container" th:object="${order}">
+<div class="container" >
     <form method="post" th:action="@{/orders/save}"
-          id="save" class="form-horizontal">
-
+          id="save" class="form-horizontal" th:object="${order}">
         <div style="margin-bottom: 25px" class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
             <input th:field="${order.id}" placeholder="id (*)" class="form-control" hidden/>
@@ -36,33 +35,38 @@
             <input type="text" th:field="${order.address}" class="form-control" placeholder="Адрес доставки"
                    aria-label="Адрес доставки" aria-describedby="basic-addon2">
         </div>
+
+        <button type="submit" form="addItems" class="btn btn-primary">Добавить товары</button>
+
+        <div class="form-row">
+            <br>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Поз.</th>
+                    <th scope="col">Товар</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">Количество</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="good, stat : *{tabledGoodForm}">
+                    <td th:text="${stat.index+1}"></td>
+                    <input type="hidden" th:name="tabledGoodForm[__${stat.index}__].id"  th:value="${good.id}">
+                    <td th:text="${good.name}"> </td>
+                    <td th:text="${good.price}"></td>
+                    <td>
+                        <input type="number" th:name="tabledGoodForm[__${stat.index}__].count"  th:value="${good.count}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </form>
 
-    <div class="form-row">
-        <form th:method="get" th:action="@{/items/select}">
-            <input type="hidden" name="orderid" th:value="${order.id}">
-            <button type="submit" class="btn btn-outline-info">Добавить товары</button>
-        </form>
-        <br>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Поз.</th>
-                <th scope="col">Товар</th>
-                <th scope="col">Цена</th>
-                <th scope="col">Количество</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="line, index : ${order.getOrderLines()}">
-                <td th:text="${index.index+1}"></td>
-                <td th:text="${line.good.name}"></td>
-                <td th:text="${line.good.price}"></td>
-                <td><input type="text" th:value="${line.count}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <form th:method="get" th:action="@{/items/select}" id="addItems" >
+        <input type="hidden" name="orderid" th:value="${order.id}">
+    </form>
 
     <div style="margin-top: 10px" class="form-group">
         <div class="col-sm-6 controls">

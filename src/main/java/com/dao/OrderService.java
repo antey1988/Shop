@@ -1,4 +1,4 @@
-package com.services;
+package com.dao;
 
 import com.entities.Order;
 
