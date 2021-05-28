@@ -1,8 +1,8 @@
 package com.controllers;
 
 import com.entities.Good;
-import com.service.GoodId;
-import com.dao.GoodService;
+import com.forms.GoodId;
+import com.services.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +14,10 @@ import java.math.BigDecimal;
 @Controller
 @Transactional
 public class GoodController {
-    private static Good good1, good2;
 
+    private static Good good1, good2;
     private boolean added = false;
+
     static {
         good1 = new Good();
         good1.setName("Amediateka");
@@ -25,6 +26,7 @@ public class GoodController {
         good2.setName("Voltage Protector");
         good2.setPrice(new BigDecimal("4.00"));
     }
+
     private void addItems() {
         if (!added) {
             goodService.save(good1);
@@ -70,13 +72,10 @@ public class GoodController {
 
     @GetMapping("/items/select")
     public String showSelectGood(Model model, @RequestParam(value = "orderid", required = false) Long id ){
-//                                 ,@ModelAttribute(value = "order")Order order) {
         addItems();
         model.addAttribute("items", goodService.findAll());
-//        model.addAttribute("order", order);
         model.addAttribute("orderid", id);
         model.addAttribute("goodId", new GoodId());
-//        model.addAttribute("goodForOrder", new GoodForOrder());
         return "items-select";
     }
 

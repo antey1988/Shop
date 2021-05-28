@@ -1,4 +1,4 @@
-package com.dao;
+package com.services;
 
 import com.entities.Good;
 import com.repositories.GoodRepository;
@@ -9,35 +9,31 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class GoodServiceImp implements GoodService {
-    @Autowired
+public class GoodService {
+
     private GoodRepository goodRepository;
 
+    @Autowired
     public void setGoodRepository(GoodRepository goodRepository) {
         this.goodRepository = goodRepository;
     }
 
-    @Override
     public Good save(Good good) {
         return goodRepository.save(good);
     }
 
-    @Override
     public void delete(Long id) {
         goodRepository.deleteById(id);
     }
 
-    @Override
     public List<Good> findAll() {
         return goodRepository.findAll();
     }
 
-    @Override
     public List<Good> findAllById(Iterable<Long> IDs) {
         return goodRepository.findAllById(IDs);
     }
 
-    @Override
     public Good findById(Long id) {
         try {
             return goodRepository.findById(id).get();

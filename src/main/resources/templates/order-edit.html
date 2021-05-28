@@ -53,6 +53,7 @@
                 <tr th:each="good, stat : *{tabledGoodForm}">
                     <td th:text="${stat.index+1}"></td>
                     <input type="hidden" th:name="tabledGoodForm[__${stat.index}__].id"  th:value="${good.id}">
+                    <input type="hidden" th:name="tabledGoodForm[__${stat.index}__].orderLineId"  th:value="${good.orderLineId}">
                     <td th:text="${good.name}"> </td>
                     <td th:text="${good.price}"></td>
                     <td>

@@ -1,4 +1,4 @@
-package com.service;
+package com.forms;
 
 import com.entities.Order;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,6 +9,7 @@ import java.util.List;
 public class OrderForm {
     private Long id;
     private String client;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String address;
     private List<GoodForm> tabledGoodForm;
@@ -36,21 +37,12 @@ public class OrderForm {
         return id;
     }
 
-    public String getClient() {
-        return client;
-    }
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    public Date getDate() {
-        return date;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getClient() {
+        return client;
     }
 
     public void setClient(String client) {
@@ -59,6 +51,14 @@ public class OrderForm {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public void setAddress(String address) {
